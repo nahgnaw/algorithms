@@ -34,10 +34,18 @@ class DynamicArray:
     def _make_array(self, c):
         return (c * ctypes.py_object)()
 
+    @property
+    def size(self):
+        return arr._n
+
+    @property
+    def capacity(self):
+        return arr._capacity
+
 
 if __name__ == '__main__':
 
-    d_arr = DynamicArray()
+    arr = DynamicArray()
     for i in xrange(1000):
-        d_arr.append(i)
-        print d_arr._n, d_arr._capacity
+        arr.append(i)
+        print arr.size, arr.capacity

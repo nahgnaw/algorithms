@@ -1,8 +1,6 @@
 # -*- coding: utf8 -*-
 
-
-class Empty(Exception):
-    pass
+from utils import Empty
 
 
 class ArrayStack:

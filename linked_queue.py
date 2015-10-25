@@ -13,18 +13,6 @@ class LinkedQueue:
             self._element = element
             self._next = next
 
-        @property
-        def element(self):
-            return self._element
-
-        @property
-        def next(self):
-            return self._next
-
-        @next.setter
-        def next(self, e):
-            self._next = e
-
     def __init__(self):
         self._head = None
         self._tail = None
@@ -39,13 +27,13 @@ class LinkedQueue:
     def first(self):
         if self.is_empty():
             raise Empty('Empty queue!')
-        return self._head.element
+        return self._head._element
 
     def dequeue(self):
         if self.is_empty():
             raise Empty('Empty queue!')
-        e = self._head.element
-        self._head = self._head.next
+        e = self._head._element
+        self._head = self._head._next
         self._size -= 1
         if self.is_empty():
             self._tail = None
@@ -56,7 +44,7 @@ class LinkedQueue:
         if self.is_empty():
             self._head = new
         else:
-            self._tail.next = new
+            self._tail._next = new
         self._tail = new
         self._size += 1
 

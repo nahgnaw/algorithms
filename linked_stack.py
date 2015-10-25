@@ -13,14 +13,6 @@ class LinkedStack:
             self._element = element
             self._next = next
 
-        @property
-        def element(self):
-            return self._element
-
-        @property
-        def next(self):
-            return self._next
-
     def __init__(self):
         self._head = None
         self._size = 0
@@ -38,13 +30,13 @@ class LinkedStack:
     def top(self):
         if self.is_empty():
             raise Empty('Empty stack!')
-        return self._head.element
+        return self._head._element
 
     def pop(self):
         if self.is_empty():
             raise Empty('Empty stack!')
-        e = self._head.element
-        self._head = self._head.next
+        e = self._head._element
+        self._head = self._head._next
         self._size -= 1
         return e
 

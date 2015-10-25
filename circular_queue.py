@@ -13,18 +13,6 @@ class CircularQueue:
             self._element = element
             self._next = next
 
-        @property
-        def element(self):
-            return self._element
-
-        @property
-        def next(self):
-            return self._next
-
-        @next.setter
-        def next(self, e):
-            self._next = e
-
     def __init__(self):
         self._tail = None
         self._size = 0
@@ -38,33 +26,33 @@ class CircularQueue:
     def first(self):
         if self.is_empty():
             raise Empty('Empty queue!')
-        head = self._tail.next
-        return head.element
+        head = self._tail._next
+        return head._element
 
     def dequeue(self):
         if self.is_empty():
             raise Empty('Empty queue!')
-        head = self._tail.next
+        head = self._tail._next
         if self._size == 1:
             self._tail = None
         else:
-            self._tail.next = head.next
+            self._tail._next = head._next
         self._size -= 1
-        return head.element
+        return head._element
 
     def enqueue(self, e):
         new = self._Node(e, None)
         if self.is_empty():
-            new.next = new
+            new._next = new
         else:
-            new.next = self._tail.next
-            self._tail.next = new
+            new._next = self._tail._next
+            self._tail._next = new
         self._tail = new
         self._size += 1
 
     def rotate(self):
         if self._size > 0:
-            self._tail = self._tail.next
+            self._tail = self._tail._next
 
 
 if __name__ == '__main__':

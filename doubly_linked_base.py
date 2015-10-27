@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class _DoublyLinkedBase:
+class _DoublyLinkedBase(object):
 
     class _Node:
 

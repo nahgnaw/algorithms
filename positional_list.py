@@ -46,7 +46,7 @@ class PositionalList(_DoublyLinkedBase):
         return self._make_position(node._prev)
 
     def after(self, p):
-        node = self._make_position(p)
+        node = self._validate(p)
         return self._make_position(node._next)
 
     def __iter__(self):
@@ -83,4 +83,40 @@ class PositionalList(_DoublyLinkedBase):
         original._element = e
         return old_value
 
+    def insertion_sort(self):
+        if len(self) > 1:
+            marker = self.first()
+            while marker != self.last():
+                pivot = self.after(marker)
+                value = pivot.element()
+                if value > marker.element():
+                    marker = pivot
+                else:
+                    walk = marker
+                    while walk != self.first() and self.before(walk).element() > value:
+                        walk = self.before(walk)
+                    self.delete(pivot)
+                    self.add_before(walk, value)
 
+    def print_list(self):
+        l = []
+        for k in self:
+            l.append(str(k))
+        return ' '.join(l)
+
+
+if __name__ == '__main__':
+
+    pl = PositionalList()
+
+    pl.add_first(100)
+    pl.add_last(1)
+
+    print 'Current list: {}'.format(pl.print_list())
+
+    for i in xrange(20):
+        pl.add_first(i)
+    print 'Current list: {}'.format(pl.print_list())
+
+    pl.insertion_sort()
+    print 'Current list: {}'.format(pl.print_list())

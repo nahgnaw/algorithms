@@ -9,8 +9,6 @@ class Tree(object):
 
     class Position(object):
 
-        __metaclass__ = ABCMeta
-
         @abstractmethod
         def element(self):
             return
@@ -19,7 +17,6 @@ class Tree(object):
         def __eq__(self, other):
             return
 
-        @abstractmethod
         def __ne__(self, other):
             return not (self == other)
 

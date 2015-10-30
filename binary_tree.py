@@ -24,3 +24,9 @@ class BinaryTree(Tree):
                 return self.right(parent)
             else:
                 return self.left(parent)
+
+    def children(self, p):
+        if self.left(p) is not None:
+            yield self.left(p)
+        if self.right(p) is not None:
+            yield self.right(p)

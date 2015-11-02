@@ -100,3 +100,24 @@ class Tree(object):
                 yield p
                 for c in self.children(p):
                     fringe.enqueue(c)
+
+    def preorder_label(self, p, d, path):
+        label = '.'.join(str(i+1) for i in path)
+        print 2 * d * ' ' + label, str(p.element())
+        path.append(0)
+        for c in self.children(p):
+            self.preorder_label(c, d+1, path)
+            path[-1] += 1
+        path.pop()
+
+    def parenthesize(self, p):
+        print p.element(),
+        if not self.is_leaf(p):
+            first_time = True
+            for c in self.children(p):
+                sep = ' (' if first_time else ' ,'
+                print sep,
+                first_time = False
+                self.parenthesize(c)
+            print ')',
+

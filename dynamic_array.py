@@ -3,7 +3,7 @@
 import ctypes
 
 
-class DynamicArray:
+class DynamicArray(object):
 
     def __init__(self):
         self._n = 0

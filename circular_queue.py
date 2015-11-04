@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class CircularQueue:
+class CircularQueue(object):
 
     class _Node:
 

@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class ArrayQueue:
+class ArrayQueue(object):
 
     DEFAULT_CAPACITY = 5
 

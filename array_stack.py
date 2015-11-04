@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class ArrayStack:
+class ArrayStack(object):
 
     def __init__(self):
         self._arr = []

@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class LinkedQueue:
+class LinkedQueue(object):
 
     class _Node:
 

@@ -3,7 +3,7 @@
 from utils import Empty
 
 
-class LinkedStack:
+class LinkedStack(object):
 
     class _Node:
 

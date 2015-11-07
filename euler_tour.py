@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 
+
 class EulerTour(object):
 
     def __init__(self, tree):

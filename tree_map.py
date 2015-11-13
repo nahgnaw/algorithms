@@ -151,5 +151,14 @@ class TreeMap(LinkedBinaryTree, MapBase):
             if k == p.key():
                 self.delete(p)
                 return
-            self._rebalance_acess(p)
+            self._rebalance_access(p)
         raise KeyError('Key error: {}'.format(repr(k)))
+
+    def _rebalance_insert(self, p):
+        pass
+
+    def _rebalance_delete(self, p):
+        pass
+
+    def _rebalance_access(self, p):
+        pass

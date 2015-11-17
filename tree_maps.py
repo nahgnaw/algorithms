@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
-from tree import LinkedBinaryTree
-from map import MapBase
+from trees import LinkedBinaryTree
+from maps import MapBase
 
 
 class TreeMap(LinkedBinaryTree, MapBase):

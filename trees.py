@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 
 from abc import ABCMeta, abstractmethod
-from queue import LinkedQueue
+from queues import LinkedQueue
 
 
 class Tree(object):

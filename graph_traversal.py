@@ -1,5 +1,7 @@
 # -*- coding: utf8 -*-
 
+from priority_queues import AdaptiveHeapPriorityQueue
+
 
 def depth_first_search(g, u, discovered):
     for e in g.incident_edges(u):
@@ -62,3 +64,31 @@ def topological_sort(g):
             if incount[v] == 0:
                 ready.append(v)
     return topo
+
+
+def shortest_path_lengths(g, src):
+    d = {}
+    cloud = {}
+    pq = AdaptiveHeapPriorityQueue()
+    pqlocator = {}
+
+    for v in g.vertices():
+        if v is src:
+            d[v] = 0
+        else:
+            d[v] = float('inf')
+        pqlocator[v] = pq.add(d[v], v)
+
+    while not pq.is_empty():
+        key, u = pq.remove_min()
+        cloud[u] = key
+        del pqlocator[u]
+        for e in g.incident_edges(u):
+            v = e.opposite(u)
+            if v not in cloud:
+                wgt = e.element()
+                if d[u] + wgt < d[v]:
+                    d[v] = d[u] + wgt
+                    pq.upadte(pqlocator[v], d[v], v)
+
+    return cloud

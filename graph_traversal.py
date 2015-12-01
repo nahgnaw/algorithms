@@ -92,3 +92,34 @@ def shortest_path_lengths(g, src):
                     pq.upadte(pqlocator[v], d[v], v)
 
     return cloud
+
+
+def mst_prim_jarnik(g):
+    d = {}
+    tree = []
+    pq = AdaptiveHeapPriorityQueue()
+    pqlocator = {}
+
+    for v in g.vertices():
+        if len(d) == 0:
+            d[v] = 0
+        else:
+            d[v] = float('inf')
+        pqlocator[v] = pq.add(d[v], (v, None))
+
+    while not pq.is_empty():
+        key, value = pq.remove_min()
+        u, e = value
+        del pqlocator[u]
+        if e is not None:
+            tree.append(e)
+        for link in g.incident_edges(u):
+            v = link.opposite(u)
+            if v in pqlocator:
+                wgt = link.element()
+                if wgt < d[v]:
+                    d[v] = wgt
+                    pq.upadte(pqlocator[v], d[v], (v, link))
+
+    return tree
+

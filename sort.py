@@ -6,6 +6,7 @@ import copy
 import time
 
 
+# Time: O(n^2). Space: O(1). Stable.
 def bubble_sort(items):
     for i in xrange(len(items)):
         for j in xrange(len(items) - 1 - i):
@@ -13,6 +14,17 @@ def bubble_sort(items):
                 items[j], items[j + 1] = items[j + 1], items[j]
 
 
+# Time: O(n^2). Space: O(1). Unstable.
+def selection_sort(items):
+    for i in xrange(len(items)):
+        min = i
+        for j in xrange(i + 1, len(items)):
+            if items[j] < items[min]:
+                min = j
+        items[i], items[min] = items[min], items[i]
+
+
+# Time: O(n^2). Space: O(1). Stable.
 def insertion_sort(items):
     for i in xrange(1, len(items)):
         j = i
@@ -21,6 +33,7 @@ def insertion_sort(items):
             j -= 1
 
 
+# Time: O(nlogn). Space: O(1). Stable.
 def merge_sort(items):
 
     def merge(l, r, s):
@@ -74,21 +87,24 @@ def nonrecursive_merge_sort(items):
         items[0:n] = src[0:n]
 
 
-def quick_sort(items):
-    n = len(items)
-    if n > 1:
-        pivot = n // 2
-        smaller = []
-        larger = []
-        for i, val in enumerate(items):
-            if i != pivot:
-                if val < items[pivot]:
-                    smaller.append(val)
-                else:
-                    larger.append(val)
-        quick_sort(smaller)
-        quick_sort(larger)
-        items[:] = smaller + [items[pivot]] + larger
+# Time: O(nlogn). Space: O(1). Unstable.
+def quick_sort(items, left, right):
+    if left >= right:
+        return items
+
+    marker = items[left]
+    lp, rp = left, right
+    while lp < rp:
+        while items[rp] >= marker and lp < rp:
+            rp -= 1
+        while items[lp] <= marker and lp < rp:
+            lp += 1
+        items[lp], items[rp] = items[rp], items[lp]
+    items[left], items[lp] = items[lp], items[left]
+
+    quick_sort(items, left, lp - 1)
+    quick_sort(items, rp + 1, right)
+
 
 
 if __name__ == '__main__':
@@ -101,6 +117,13 @@ if __name__ == '__main__':
     bubble_sort(numbers_copy)
     te = time.time()
     print 'Bubble sort: {}'.format(' '.join(str(x) for x in numbers_copy))
+    print '{:.4e}\n'.format(te - ts)
+
+    numbers_copy = copy.deepcopy(numbers)
+    ts = time.time()
+    selection_sort(numbers_copy)
+    te = time.time()
+    print 'selection sort: {}'.format(' '.join(str(x) for x in numbers_copy))
     print '{:.4e}\n'.format(te - ts)
 
     numbers_copy = copy.deepcopy(numbers)
@@ -126,7 +149,7 @@ if __name__ == '__main__':
 
     numbers_copy = copy.deepcopy(numbers)
     ts = time.time()
-    quick_sort(numbers_copy)
+    quick_sort(numbers_copy, 0, len(numbers_copy) - 1)
     te = time.time()
     print 'Quick sort: {}'.format(' '.join(str(x) for x in numbers_copy))
     print '{:.4e}\n'.format(te - ts)

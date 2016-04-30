@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 from trees import LinkedBinaryTree
 from maps import MapBase

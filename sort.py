@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 import math
 import random
@@ -33,7 +33,7 @@ def insertion_sort(items):
             j -= 1
 
 
-# Time: O(nlogn). Space: O(1). Stable.
+# Time: O(nlogn). Space: O(n). Stable.
 def merge_sort(items):
 
     def merge(l, r, s):
@@ -57,47 +57,77 @@ def merge_sort(items):
     merge(left, right, items)
 
 
-def nonrecursive_merge_sort(items):
+# def nonrecursive_merge_sort(items):
 
-    def merge(src, result, start, inc):
-        end_1 = start + inc
-        end_2 = min(start + 2 * inc, len(src))
-        x, y, z = start, start + inc, start
-        while x < end_1 and y < end_2:
-            if src[x] < src[y]:
-                result[z] = src[x]
-                x += 1
-            else:
-                result[z] = src[y]
-                y += 1
-            z += 1
-        if x < end_1:
-            result[z:end_2] = src[x:end_1]
-        elif y < end_2:
-            result[z:end_2] = src[y:end_2]
+#     def merge(src, result, start, inc):
+#         end_1 = start + inc
+#         end_2 = min(start + 2 * inc, len(src))
+#         x, y, z = start, start + inc, start
+#         while x < end_1 and y < end_2:
+#             if src[x] < src[y]:
+#                 result[z] = src[x]
+#                 x += 1
+#             else:
+#                 result[z] = src[y]
+#                 y += 1
+#             z += 1
+#         if x < end_1:
+#             result[z:end_2] = src[x:end_1]
+#         elif y < end_2:
+#             result[z:end_2] = src[y:end_2]
 
-    n = len(items)
-    logn = int(math.ceil(math.log(n, 2)))
-    src, dest = items, [None] * n
-    for i in (2 ** k for k in range(logn)):
-        for j in range(0, n, 2*i):
-            merge(src, dest, j, i)
-        src, dest = dest, src
-    if items is not src:
-        items[0:n] = src[0:n]
+#     n = len(items)
+#     logn = int(math.ceil(math.log(n, 2)))
+#     src, dest = items, [None] * n
+#     for i in (2 ** k for k in range(logn)):
+#         for j in range(0, n, 2*i):
+#             merge(src, dest, j, i)
+#         src, dest = dest, src
+#     if items is not src:
+#         items[0:n] = src[0:n]
 
 
 # Time: O(nlogn). Space: O(1). Unstable.
+def heap_sort(items):
+
+    def max_heapify(start, end):
+        k = start
+        while k <= end:
+            max_index = k
+            # Compare with the left child.
+            if 2 * k + 1 <= end and items[2*k+1] > items[max_index]:
+                max_index = 2 * k + 1
+            # Compare with the right child.
+            if 2 * k + 2 <= end and items[2*k+2] > items[max_index]:
+                max_index = 2 * k + 2
+            if k == max_index:
+                break
+            items[k], items[max_index] = items[max_index], items[k]
+            k = max_index
+
+    n = len(items)
+    # Construct max-heaps starting from the last non-leaf node to the root
+    for i in xrange(n / 2 - 1, -1, -1):
+        max_heapify(i, n - 1)
+    for i in xrange(n - 1, 0, -1):
+        items[0], items[i] = items[i], items[0]
+        max_heapify(0, i - 1)
+
+
+# Time: O(nlogn). Space: O(logn) ~ O(n). Unstable.
 def quick_sort(items, left, right):
+    import random
+
     if left >= right:
         return items
 
-    marker = items[left]
+    pivot = random.randint(left, right)
+    items[pivot], items[left] = items[left], items[pivot]
     lp, rp = left, right
     while lp < rp:
-        while items[rp] >= marker and lp < rp:
+        while items[rp] >= items[left] and lp < rp:
             rp -= 1
-        while items[lp] <= marker and lp < rp:
+        while items[lp] <= items[left] and lp < rp:
             lp += 1
         items[lp], items[rp] = items[rp], items[lp]
     items[left], items[lp] = items[lp], items[left]
@@ -137,14 +167,21 @@ if __name__ == '__main__':
     ts = time.time()
     merge_sort(numbers_copy)
     te = time.time()
-    print 'Merge sort (recursive): {}'.format(' '.join(str(x) for x in numbers_copy))
+    print 'Merge sort: {}'.format(' '.join(str(x) for x in numbers_copy))
     print '{:.4e}\n'.format(te - ts)
+
+    # numbers_copy = copy.deepcopy(numbers)
+    # ts = time.time()
+    # nonrecursive_merge_sort(numbers_copy)
+    # te = time.time()
+    # print 'Merge sort (non-recursive): {}'.format(' '.join(str(x) for x in numbers_copy))
+    # print '{:.4e}\n'.format(te - ts)
 
     numbers_copy = copy.deepcopy(numbers)
     ts = time.time()
-    nonrecursive_merge_sort(numbers_copy)
+    heap_sort(numbers_copy)
     te = time.time()
-    print 'Merge sort (non-recursive): {}'.format(' '.join(str(x) for x in numbers_copy))
+    print 'Heap sort: {}'.format(' '.join(str(x) for x in numbers_copy))
     print '{:.4e}\n'.format(te - ts)
 
     numbers_copy = copy.deepcopy(numbers)

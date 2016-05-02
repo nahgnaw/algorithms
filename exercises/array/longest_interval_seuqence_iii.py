@@ -8,8 +8,44 @@ Note: the original order doesn't need to be maintained.
     
 E.g. given [[1,10], [3,4], [4,5], [11,12], [3,8], [2,9]]
 Return: [[1,10], [2,9], [3,8], [4,5]]
-
-sort by left value
-dp[i]: number of longest sequence
-dp[i] = max([dp[j] + 1 for j in xrange(i) if i is nested in j])
 """
+
+
+class Solution(object):
+    def interval_sequence(self, intervals):
+        if not intervals:
+            return []
+
+        intervals.sort(key=lambda x: x[0])
+        
+        # dp[i]: the number of longest ordered interval sequence that ends with intervals[i]
+        dp = [1] * len(intervals)
+        # Record the longest ordered interval sequence for each interval
+        sequences = [[intervals[i]] for i in xrange(len(intervals))]
+        for i in xrange(1, len(intervals)):
+            max_seq_len = 0
+            tmp_seq = []
+            # Look at every previous interval j of i, check if i is nested in j
+            # If i is nested in j, dp[i] == max(dp[j]) + 1
+            for j in xrange(i):
+                if intervals[i][0] > intervals[j][0] and intervals[i][1] < intervals[j][1]:
+                    if dp[j] + 1 > max_seq_len:
+                        max_seq_len = dp[j] + 1
+                        tmp_seq = sequences[j] + [intervals[i]]
+            # If i is nested in none of its previous intervals, dp[i] = 1
+            if max_seq_len > 1:
+                dp[i] = max_seq_len
+                sequences[i] = tmp_seq[:]
+
+        # Return the longest one in sequences.
+        result = sequences[0]
+        for seq in sequences[1:]:
+            if len(seq) > len(result):
+                result = seq[:]
+        return result
+
+
+if __name__ == '__main__':
+    sol = Solution()
+    intervals = [[1,10], [3,4], [4,5], [11,12], [3,8], [2,9]]
+    print sol.interval_sequence(intervals)

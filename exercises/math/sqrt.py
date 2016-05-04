@@ -58,9 +58,23 @@ class Solution(object):
         else:
             return helper(x, 1.0)
 
+    # Float version. New method.
+    # Update rule: x_new = x_old - f(x_old) / f'(x_old)
+    # Here, f(x_old) = x_old^2 - x, f'(x_old) = 2 * x_old
+    def myFloatSqrt2(self, x, precision):
+        x = float(x)
+        sqrt = 1.0
+        while True:
+            sqrt_new = sqrt - (sqrt ** 2 - x) / (2 * sqrt)
+            if abs(sqrt_new - sqrt) <= precision:
+                break
+            sqrt = sqrt_new
+        return sqrt_new
+
 
 if __name__ == '__main__':
     sol = Solution()
-    x = 0.000067876
-    precision = 0.001
+    x = 0.000098
+    precision = 0.000001
     print sol.myFloatSqrt(x, precision)
+    print sol.myFloatSqrt2(x, precision)

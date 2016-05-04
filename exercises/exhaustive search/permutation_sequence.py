@@ -27,13 +27,15 @@ class Solution(object):
         """
         nums = range(1, n + 1)
 
+        # Pre-generate factorials.
         factorial = [1]
         for i in xrange(1, n):
             factorial.append(i * factorial[-1])
 
-        k -= 1
+        k -= 1  # Because of zero-based index.
         permutation = ''
         while n > 0:
+            # Select the number from the left most digit.
             index = k / factorial[n-1]
             k = k % factorial[n-1]
             permutation += str(nums[index])

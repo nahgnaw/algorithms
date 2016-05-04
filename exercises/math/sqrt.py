@@ -13,14 +13,20 @@ class Solution(object):
         :type x: int
         :rtype: int
         """
+        if x < 0:
+            return None
+            
         if x in [0, 1]:
             return x
-
+        
         left, right = 1, x
-        sqrt = 0
+        sqrt = left
         while left <= right:
             mid = (left + right) / 2
-            if mid <= x / mid:
+            s = mid * mid
+            if s == x:
+                return mid
+            elif s < x:
                 left = mid + 1
                 sqrt = mid
             else:

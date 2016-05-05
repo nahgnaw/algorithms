@@ -31,11 +31,14 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        if not root:
-            return None
-
-        next = p.val < root.val > q.val and root.left or p.val > root.val < q.val and root.right
-        return self.lowestCommonAncestor(next, p, q) if next else root
+        if root in [None, p, q]:
+            return root
+            
+        if p.val < root.val and q.val < root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+        if p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        return root
 
     def lowestCommonAncester(self, root, p, q):
         while root:

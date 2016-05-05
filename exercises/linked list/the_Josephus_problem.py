@@ -24,6 +24,7 @@ class Person(object):
 
     # Kill every kth living person in a circle
     # Return the final survivor.
+    # O(kn)
     def kill(self, pos, k, remaining):
         # Skip this person if he is already dead.
         if not self.alive:
@@ -32,18 +33,39 @@ class Person(object):
         if remaining == 1:
             return self
         # Kill the kth person.
-        if pos == k % n:
+        if pos == k:
             self.alive = False
             pos = 0 # Reset the position counter.
             remaining -= 1  # Decrement the remaining counter.
         return self.next.kill(pos + 1, k, remaining)
 
 
+# O(n)
+# Using 0-based index, people count from 0 to k-1, and the person who counts k-1 will be eliminated.
+# Let the survivor in the first round be in position: f(n, k).
+# Then the survivor in the second round is in position: f(n-1, k)
+# Position in first round --------- Position in second round
+# k%n ----------------------------- 0
+# k%n+1 --------------------------- 1
+# k%n+2 --------------------------- 2
+# ...
+# k%n+f(n-1,k) -------------------- f(n-1,k)
+# f(n, k) = k % n + f(n-1, k) = (k + f(n-1, k)) % n
+def josephus_dp(n, k):
+    result = 0 # In the last round (1 person left), the survivor's position is 0.
+    # Loop starting from the second last round (2 people left) to the first round (n people left)
+    for i in xrange(2, n+1):
+        result = (k + result) % i
+
+    return result + 1   # We need 1-based index.
+
+
 if __name__ == '__main__':
-    n, k = 20, 7
+    n, k = 8, 3
     first = Person(1)
     last = first.create_linked_list(n - 1)
     last.next = first   # Create a circular linked list.
-
     survivor = first.kill(1, k, n)
     print survivor
+
+    print josephus_dp(n, k)

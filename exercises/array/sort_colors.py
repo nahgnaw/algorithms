@@ -34,18 +34,33 @@ class Solution(object):
                 nums[i], nums[right] = nums[right], nums[i]
                 right -= 1
                 i -= 1
-            i += 1
+            i += 1                
 
+    # Count sort.
     def sortColors2(self, nums):
-        i, j = 0, 0
-        for k in xrange(len(nums)):
-            v = nums[k]
-            nums[k] = 2
-            if v < 2:
-                nums[j] = 1
-                j += 1
-            if v == 0:
-                nums[i] = 0
-                i += 1
-
+        if not nums:
+            return 
+        
+        counts = {}
+        for x in nums:
+            counts[x] = counts.setdefault(x, 0) + 1
             
+        for i in xrange(len(nums)):
+            if i < counts.get(0, 0):
+                nums[i] = 0
+            elif i < counts.get(0, 0) + counts.get(1, 0):
+                nums[i] = 1
+            else:
+                nums[i] = 2
+
+    def sortColors3(self, nums):
+        smallest, small = 0, 0
+        for i in xrange(len(nums)):
+            x = nums[i]
+            nums[i] = 2
+            if x < 2:
+                nums[small] = 1
+                small += 1
+            if x < 1:
+                nums[smallest] = 0
+                smallest += 1

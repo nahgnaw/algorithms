@@ -1,0 +1,49 @@
+# -*- coding: utf-8 -*-
+
+"""
+Flavius Josephus was a roman historian of Jewish origin. During the Jewish-Roman wars of the first century AD, he was in a cave with fellow soldiers, 40 men in all, surrounded by enemy Roman troops. They decided to commit suicide by standing in a ring and counting off each third man. Each man so designated was to commit suicide...Josephus, not wanting to die, managed to place himself in the position of the last survivor.
+
+In the general version of the problem, there are n soldiers numbered from 1 to n and each k-th soldier will be eliminated. The count starts from the first soldier. What is the number of the last survivor?
+"""
+
+class Person(object):
+
+    def __init__(self, pos):
+        self.pos = pos
+        self.alive = True
+
+    def __str__(self):
+        return 'Person #{}, {}'.format(self.pos, self.alive)
+
+    # Create a linked list with n people. Return the last person.
+    def create_linked_list(self, n):
+        if n > 0:
+            self.next = Person(self.pos + 1)
+            return self.next.create_linked_list(n - 1)
+        return self
+
+    # Kill every kth living person in a circle
+    # Return the final survivor.
+    def kill(self, pos, k, remaining):
+        # Skip this person if he is already dead.
+        if not self.alive:
+            return self.next.kill(pos, k, remaining)
+        # The last living person is the survivor.
+        if remaining == 1:
+            return self
+        # Kill the kth person.
+        if pos == k % n:
+            self.alive = False
+            pos = 0 # Reset the position counter.
+            remaining -= 1  # Decrement the remaining counter.
+        return self.next.kill(pos + 1, k, remaining)
+
+
+if __name__ == '__main__':
+    n, k = 20, 7
+    first = Person(1)
+    last = first.create_linked_list(n - 1)
+    last.next = first   # Create a circular linked list.
+
+    survivor = first.kill(1, k, n)
+    print survivor

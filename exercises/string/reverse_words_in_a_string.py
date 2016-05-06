@@ -28,8 +28,24 @@ class Solution(object):
         :type s: str
         :rtype: str
         """
-        return " ".join(s.strip().split()[::-1])
-
+        if not s:
+            return s
+            
+        result = []
+        i = 0
+        while i < len(s):
+            if s[i] == ' ':
+                i += 1
+                continue
+            if i >= len(s):
+                return ''
+            j = i + 1
+            while j < len(s) and not s[j] == ' ':
+                j += 1
+            result.append(s[i:j])
+            i = j
+        return ' '.join(result[::-1])
+        
 
 if __name__ == '__main__':
     s = "the sky is blue"

@@ -6,18 +6,21 @@ Implement a trie with insert, search, and startsWith methods.
 
 
 class TrieNode(object):
-    def __init__(self):
+    def __init__(self, alphabet_size=26):
         """
         Initialize your data structure here.
         """
         self.is_leaf = False
-        self.children = [None] * 26
+        self.children = [None] * alphabet_size
 
 
 class Trie(object):
 
     def __init__(self):
         self.root = TrieNode()
+
+    def _get_char_ind(self, char, base='a'):
+        return ord(char) - ord(base)
 
     def insert(self, word):
         """
@@ -27,7 +30,7 @@ class Trie(object):
         """
         walk = self.root
         for ch in word:
-            ind = ord(ch) - ord('a')
+            ind = self._get_char_ind(ch)
             if not walk.children[ind]:
                 walk.children[ind] = TrieNode()
             walk = walk.children[ind]
@@ -41,14 +44,11 @@ class Trie(object):
         """
         walk = self.root
         for ch in word:
-            ind = ord(ch) - ord('a')
+            ind = self._get_char_ind(ch)
             if not walk.children[ind]:
                 return False
             walk = walk.children[ind]
-        if walk.is_leaf:
-            return True
-        else:
-            return False
+        return True if walk.is_leaf else False
 
     def startsWith(self, prefix):
         """
@@ -59,7 +59,7 @@ class Trie(object):
         """
         walk = self.root
         for ch in prefix:
-            ind = ord(ch) - ord('a')
+            ind = self._get_char_ind(ch)
             if not walk.children[ind]:
                 return False
             walk = walk.children[ind]
@@ -95,10 +95,11 @@ class Trie(object):
 if __name__ == '__main__':
     # Your Trie object will be instantiated and called as such:
     trie = Trie()
-    trie.insert("tree")
-    trie.insert("trie")
-    trie.insert("treemap")
+    trie.insert('tree')
+    trie.insert('trie')
+    trie.insert('auto')
+    trie.insert('treemap')
     trie.insert('tap')
-    print trie.search("treemap")
+    print trie.search('treemap')
     # print trie.startsWith("tree")
     print trie.autocomplete('t')

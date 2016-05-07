@@ -36,5 +36,4 @@ if __name__ == '__main__':
     target = 5
     sol = Solution()
     print sol.searchInsert(nums, target)
-    print sol.searchInsert2(nums, target)
 

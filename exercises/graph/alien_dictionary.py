@@ -23,6 +23,7 @@ There may be multiple valid order of letters, return any one of them is fine.
 
 
 class Solution(object):
+    # BFS
     def alienOrder(self, words):
         """
         :type words: List[str]
@@ -30,38 +31,82 @@ class Solution(object):
         """
         from collections import deque
         
-        char_set = set()
-        for w in words:
-            for c in w:
-                char_set.add(c)
-                
-        # Compute indegrees for each character.
-        # Get neighbors for each character.
-        indegrees = {c: 0 for c in char_set}
-        neighbors = {c: [] for c in char_set}
-        for w in words:
-            for i in xrange(len(w) - 1):
-                if not w[i] == w[i+1]:
-                    indegrees[w[i+1]] += 1
-                    neighbors[w[i]].append(w[i+1])
-        
-        # Start from characters with 0 indegree.
-        start = [c for c in indegrees if not indegrees[c]]
-        if not start:
+        if not words:
             return ''
             
-        # Topological sort.
+        # Collect all the characters.
+        char_set = set(''.join(words))
+                
+        # Build the graph.
+        # A char's indegree is how many chars are before it.
+        indegree = {c: 0 for c in char_set}
+        neighbors = {c: [] for c in char_set}
+        for pair in zip(words, words[1:]):
+            for x, y in zip(*pair):
+                if not x == y:
+                    neighbors[x].append(y)  # x come before y
+                    indegree[y] += 1
+                    # Once an ordered pair is found, the rest char pairs 
+                    # between the two words don't have order relations.
+                    break
+        
+        # Collect the chars that have no other chars before them.
+        first_chars = [c for c in indegree if indegree[c] == 0]
+        if not first_chars:
+            return ''
+        
+        queue = deque(first_chars)
+        count = 0
         order = []
-        queue = deque(start)
-        count = len(indegrees)
         while queue:
-            char = queue.popleft()
-            order.append(char)
-            for c in neighbors[char]:
-                indegrees[c] -= 1
-                if not indegrees[c]:
+            ch = queue.popleft()
+            order.append(ch)
+            for c in neighbors[ch]:
+                indegree[c] -= 1
+                if indegree[c] == 0:
                     queue.append(c)
-            count -= 1
-        # If count is not 0, it means there are cycles in the graph.
-        return ''.join(order) if not count else ''
+            count += 1
+        return ''.join(order) if count == len(char_set) else ''
+        
+
+        # DFS
+        def alienOrder2(self, words):
+
+            def dfs(ch):
+                order.append(ch)
+                for c in neighbors[ch]:
+                    indegree[c] -= 1
+                    if indegree[c] == 0:
+                        dfs(c)
+        
+            if not words:
+                return ''
+                
+            # Collect all the characters.
+            char_set = set(''.join(words))
+                    
+            # Build the graph.
+            # A char's indegree is how many chars are before it.
+            indegree = {c: 0 for c in char_set}
+            neighbors = {c: [] for c in char_set}
+            for pair in zip(words, words[1:]):
+                for x, y in zip(*pair):
+                    if not x == y:
+                        neighbors[x].append(y)  # x come before y
+                        indegree[y] += 1
+                        # Once an ordered pair is found, the rest char pairs 
+                        # between the two words don't have order relations.
+                        break
             
+            # Collect the chars that have no other chars before them.
+            first_chars = [c for c in indegree if indegree[c] == 0]
+            if not first_chars:
+                return ''
+            
+            # Start DFS on chars whose indegrees are 0.     
+            order = []
+            for c in first_chars:
+                dfs(c)
+            # Cannot have cycle in the graph.
+            return ''.join(order) if len(order) == len(char_set) else ''
+        

@@ -40,7 +40,7 @@ Can you do it in time complexity O(k log mn), where k is the length of the posit
 
 
 class Solution(object):
-    # Union-find.
+    # Union find.
     def numIslands2(self, m, n, positions):
         """
         :type m: int
@@ -48,23 +48,26 @@ class Solution(object):
         :type positions: List[List[int]]
         :rtype: List[int]
         """
+        # Find root of p with path compression.
         def root(p):
-            while not p == parent[p]:
-                parent[p] = parent[parent[p]]
-                p = parent[p]
-            return p
+            if not p == parent[p]:
+                parent[p] = root(parent[p])
+            return parent[p]
         
         # Return the number of islands decreased by this union operation.
         def union(p, q):
-            p_root, q_root = root(p), root(q)
-            if p_root == q_root:
+            p, q = root(p), root(q)
+            if p == q:
                 # If p and q are already connected, don't decrease the number of islands.
                 return 0
             # Only connect smaller trees to bigger trees.
-            if rank[p_root] < rank[q_root]:
-                p_root, q_root = q_root, p_root
-            parent[q_root] = p_root
-            rank[p_root] += rank[q_root]
+            if rank[p] < rank[q]:
+                parent[p] = q
+            elif rank[p] > rank[q]:
+                parent[q] = p
+            else:
+                parent[q] = p
+                rank[p] += 1
             # Once two points are connected, decrease the number of islands by 1.
             return 1
         
@@ -76,7 +79,7 @@ class Solution(object):
         
         for x, y in positions:
             parent[(x, y)] = (x, y)
-            rank[(x, y)] = 1
+            rank[(x, y)] = 0
             count += 1
             
             for i, j in [(x-1, y), (x+1, y), (x, y-1), (x, y+1)]:

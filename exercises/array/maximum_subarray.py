@@ -14,18 +14,51 @@ If you have figured out the O(n) solution, try coding another solution using the
 
 
 class Solution(object):
-    """
-    res[i]: the max subarray sum that ends with nums[i].
-    res[i] = max(nums[i] + res[i-1], nums[i]) (or res[i] = nums[i] + res[i-1] if res[i-1] > 0 else nums[i])
-    """
     def maxSubArray(self, nums):
         """
         :type nums: List[int]
         :rtype: int
         """
-        res = [0] * len(nums)
-        max_sum = res[0] = nums[0]
-        for i in xrange(1, len(nums)):
-            res[i] = max(nums[i] + res[i-1], nums[i])
-            max_sum = max(max_sum, res[i])
+        if not nums:
+            return 0
+            
+        max_sum = cur_sum = nums[0]
+        for x in nums[1:]:
+            # cur_sum either include x into the previous sum or only contains x.
+            cur_sum = max(x, cur_sum + x)
+            max_sum = max(max_sum, cur_sum)
         return max_sum
+
+    # Track max subarray indexes.
+    def maxSubArray2(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return None, None, None
+    
+        max_sum = cur_sum = nums[0]
+        max_left = max_right = 0
+        cur_left = 0
+
+        for i in xrange(1, len(nums)):
+            if cur_sum + nums[i] > nums[i]:
+                cur_sum += nums[i]
+            else:
+                cur_sum = nums[i]
+                cur_left = i
+
+            if cur_sum > max_sum:
+                max_sum = cur_sum
+                max_left = cur_left
+                max_right = i
+
+        return max_sum, max_left, max_right
+
+
+if __name__ == '__main__':
+    sol = Solution()
+    # nums = [-2,1,-3,4,-1,2,1,-5,4]
+    nums = [-2,-2,-2]
+    print sol.maxSubArray2(nums)

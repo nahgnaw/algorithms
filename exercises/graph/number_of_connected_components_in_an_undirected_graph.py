@@ -69,21 +69,37 @@ class Solution(object):
 
     # Union find
     def countComponents3(self, n, edges):
-        def find(x):
-            if not parent[x] == x:
-                parent[x] = find(parent[x])
-            return parent[x]
-
-        def union(xy):
-            x, y = map(find, xy)
+        # Find root of p with path compression.
+        def root(p):
+            if not p == parent[p]:
+                parent[p] = root(parent[p])
+            return parent[p]
+        
+        # Return the number of connected components decreased by connecting x and y.
+        def union(x, y):
+            x, y = root(x), root(y)
+            # If x and y are already connected (sharing the same root),
+            # nothing needs to be done.
+            if x == y:
+                return 0
+            # Only connect smaller trees to larger ones.
             if rank[x] < rank[y]:
                 parent[x] = y
-            else:
+            elif rank[x] > rank[y]:
                 parent[y] = x
-                if rank[x] == rank[y]:
-                    rank[x] += 1
-
+            else:
+                # Only increase the rank when x and y have the same rank.
+                parent[y] = x
+                rank[x] += 1
+            return 1
+        
+        # First consider every node as an isolated node.
         parent = range(n)
         rank = [0] * n
-        map(union, edges)
-        return len({find(x) for x in parent})
+        count = n
+        
+        # For every edge xy, connect x and y.
+        for x, y in edges:
+            count -= union(x, y)
+        return count
+        

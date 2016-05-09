@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-'.' Matches any single character.
-'*' Matches zero or more of the preceding element.
+Implement wildcard pattern matching with support for '?' and '*'.
+
+'?' Matches any single character.
+'*' Matches any sequence of characters (including the empty sequence).
 
 The matching should cover the entire input string (not partial).
 
@@ -13,11 +15,12 @@ Some examples:
 isMatch("aa","a") → false
 isMatch("aa","aa") → true
 isMatch("aaa","aa") → false
+isMatch("aa", "*") → true
 isMatch("aa", "a*") → true
-isMatch("aa", ".*") → true
-isMatch("ab", ".*") → true
-isMatch("aab", "c*a*b") → true
+isMatch("ab", "?*") → true
+isMatch("aab", "c*a*b") → false
 """
+
 
 class Solution(object):
     def isMatch(self, s, p):
@@ -31,26 +34,20 @@ class Solution(object):
 
         # An empty pattern matches an empty string.
         matching[0][0] = True
-
+        
         # An empty pattern doesn't match any string.
         # for i in xrange(1, len(s) + 1):
         #     matching[0][i] = False
-
-        # Empty s.
+        
+        # Empty string.
         for i in xrange(1, len(p) + 1):
-            # matching[1][0] is False since a single character pattern won't match an empty string.
-            matching[i][0] = i > 1 and p[i-1] == '*' and matching[i-2][0]
-
+            matching[i][0] = p[i-1] == '*'
+            
         for i in xrange(1, len(p) + 1):
             for j in xrange(1, len(s) + 1):
                 if not p[i-1] == '*':
-                    matching[i][j] = matching[i-1][j-1] and (p[i-1] == s[j-1] or p[i-1] == '.')
-                else:
-                    if not p[i-2] == s[j-1] and not p[i-2] == '.':
-                        # p[i-2]* counts as empty
-                        matching[i][j] = matching[i-2][j]
-                    else:
-                        # p[i-2]* counts as empty or a single p[i-2] or multiple p[i-2]
-                        matching[i][j] = matching[i-2][j] or matching[i-1][j] or matching[i][j-1]
+                    matching[i][j] = matching[i-1][j-1] and (p[i-1] == s[j-1] or p[i-1] == '?')
+                else: 
+                    matching[i][j] = matching[i-1][j] or matching[i][j-1]
         return matching[-1][-1]
-        
+                    

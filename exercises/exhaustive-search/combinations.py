@@ -24,19 +24,18 @@ class Solution(object):
         :type k: int
         :rtype: List[List[int]]
         """
-        def dfs(pos):
+        def dfs(combination, pos):
             if len(combination) == k:
-                results.append(combination[:])
+                results.append(combination)
+                return
 
             for i in xrange(pos, n + 1):
-                combination.append(i)
-                dfs(i + 1)
-                combination.pop()
+                dfs(combination + [i], i + 1)
 
         results = []
-        combination = []
-        dfs(1)
+        dfs([], 1)
         return results
+
 
     def combine2(self, n, k):
         results = []
@@ -53,21 +52,6 @@ class Solution(object):
             else:
                 combination.append(x)
                 x += 1
-
-    def combine3(self, n, k):
-
-        def dfs(combination, pos):
-            if len(combination) == k:
-                results.append(combination)
-            elif len(combination) > k:
-                return
-
-            for i in xrange(pos, n + 1):
-                dfs(combination + [i], i + 1)
-
-        results = []
-        dfs([], 1)
-        return results
 
 
 if __name__ == '__main__':

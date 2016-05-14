@@ -16,31 +16,36 @@ Return ["JFK","ATL","JFK","SFO","ATL","SFO"].
 Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"]. But it is larger in lexical order.
 """
 
+from heapq import *
+from collections import deque
 
 class Solution(object):
+
     def findItinerary(self, tickets):
         """
         :type tickets: List[List[str]]
         :rtype: List[str]
         """
-        from heapq import *
-        from collections import deque
-
-        flights = {}
-        path = deque()
-
         def dfs(start):
             destinations = flights.get(start, None)
             while destinations:
                 dfs(heappop(destinations))
             path.appendleft(start)
 
+
+        flights = {}
+        path = deque()
+
         for ticket in tickets:
             if ticket[0] not in flights:
                 flights[ticket[0]] = []
             heappush(flights[ticket[0]], ticket[1])
             
-        self.dfs(flights, path, 'JFK')
+        dfs('JFK')
         return path
 
-    
+
+if __name__ == '__main__':
+    sol = Solution()
+    tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+    print sol.findItinerary(tickets)

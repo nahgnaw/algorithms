@@ -30,6 +30,7 @@ class MedianFinder:
         self.larger_half = []   # min heap
         self.smaller_half = []  # max heap
         
+    # O(logn)
     def addNum(self, num):
         """
         Adds a num into the data structure.
@@ -42,6 +43,7 @@ class MedianFinder:
         if len(self.larger_half) < len(self.smaller_half):
             heappush(self.larger_half, -heappop(self.smaller_half))
 
+    # O(1)
     def findMedian(self):
         """
         Returns the median of current data stream

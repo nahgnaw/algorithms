@@ -26,6 +26,8 @@ class Solution(object):
         """
         index = 0
         while n:
+            # The characters left in buf4 will lost in the next call of read().
+            # Therefore read() can only be called once.
             buf4 = [''] * 4
             tmp = read4(buf4)
             if not tmp:

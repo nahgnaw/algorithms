@@ -14,9 +14,11 @@ The read function may be called multiple times.
 
 class Solution(object):
     def __init__(self):
-        self.buf4 = [''] * 4
-        self.buf4_idx = 0
-        self.buf4_cnt = 0
+        # Store characters returned by read4() outside read() 
+        # such that they can be used by the next call of read().
+        self.buf4 = [''] * 4    
+        self.buf4_idx = 0   # Pointer in self.buf4
+        self.buf4_cnt = 0   # Return value of read4()
 
     def read(self, buf, n):
         """

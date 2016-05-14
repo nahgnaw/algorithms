@@ -23,28 +23,37 @@ class Solution:
     @return: An integer denotes the middle number of the array.
     """
     def median(self, nums):
-        
-        def find_kth_smallest(left, right, k):
-            if left == right:
+
+        def quick_select(left, right, k):
+            if left >= right:
                 return nums[left]
-                
-            walk = left
-            anchor = nums[left]
-            for i in xrange(left + 1, right + 1):
-                if nums[i] <= anchor:
-                    walk += 1
-                    nums[walk], nums[i] = nums[i], nums[walk]
-            nums[left], nums[walk] = nums[walk], nums[left]
-            
-            if walk - left + 1 == k:
-                return nums[walk]
-            elif walk - left + 1 > k:
-                return find_kth_smallest(left, walk - 1, k)
+
+            l, r = left, right
+            pivot = left
+            while l < r:
+                while l < r and nums[r] >= nums[pivot]:
+                    r -= 1
+                while l < r and nums[l] <= nums[pivot]:
+                    l += 1
+                nums[l], nums[r] = nums[r], nums[l]
+            nums[left], nums[l] = nums[l], nums[left]
+
+            if l + 1 == k:
+                return nums[l]
+            elif l + 1 < k:
+                return quick_select(l + 1, right, k)
             else:
-                return find_kth_smallest(walk + 1, right, k - (walk - left + 1))
+                return quick_select(left, l - 1, k)
                 
         # For array with the odd number of elements, 
         # the median is the (N+1)/2-th smallest number
         # For array with the even number of elements, 
         # the median is also the (N+1)/2-th smallest number, as (N+1)/2 == N/2 
-        return find_kth_smallest(0, len(nums) - 1, (len(nums) + 1) / 2)
+        return quick_select(0, len(nums) - 1, (len(nums) + 1) / 2)
+
+
+if __name__ == '__main__':
+    sol = Solution()
+    nums = [-2,-6,-7]
+    print sol.median(nums)
+

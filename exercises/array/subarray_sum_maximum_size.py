@@ -17,6 +17,7 @@ Can you do it in O(n) time?
 
 
 class Solution(object):
+    # O(n)
     def maxSubArrayLen(self, nums, k):
         """
         :type nums: List[int]
@@ -24,12 +25,12 @@ class Solution(object):
         :rtype: int
         """
         sum_map = {0: -1}
-        sum = 0
+        cur_sum = 0
         max_len = 0
         for i in xrange(len(nums)):
-            sum += nums[i]
-            if sum not in sum_map:
-                sum_map[sum] = i
-            if sum - k in sum_map:
-                max_len = max(max_len, i - sum_map[sum-k])
+            cur_sum += nums[i]
+            if cur_sum not in sum_map:
+                sum_map[cur_sum] = i
+            if cur_sum - k in sum_map:
+                max_len = max(max_len, i - sum_map[cur_sum-k])
         return max_len 

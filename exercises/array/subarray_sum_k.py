@@ -17,15 +17,21 @@ class Solution:
              and the index of the last number
     """
     def subarraySum(self, nums, k):
-        sum_map = {0: 0}
-        sum = 0
+        if not nums:
+            return [-1, -1]
+        
+        # sum_map stores:
+        # key: sum(nums[:i+1])
+        # value: i 
+        sum_map = {0: -1}
+        cur_sum = 0
         for i in xrange(len(nums)):
-            sum += nums[i]
-            if sum - k in sum_map:
-                return [sum_map[sum-k], i]
+            cur_sum += nums[i]
+            if cur_sum - k in sum_map:
+                return [sum_map[cur_sum-k] + 1, i]
             else:
-                sum_map[sum] = i + 1
-        return []
+                sum_map[cur_sum] = i
+        return [-1, -1]
 
 
 if __name__ == '__main__':

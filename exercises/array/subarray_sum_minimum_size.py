@@ -23,14 +23,19 @@ class Solution(object):
         left, right = 0, 1
         while right <= len(nums):
             if sum(nums[left:right]) < s:
+                # Expand the window.
                 right += 1
             else:
+                # If there is only one element in the window, 
+                # return 1 as the min length.
                 if right - left == 1:
                     return 1
                 else:
+                    # Shrink the window.
                     min_len = min(min_len, right - left)
                     left += 1
                     
         if min_len == float('inf'):
             return 0
+
         return min_len

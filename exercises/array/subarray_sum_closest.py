@@ -20,10 +20,12 @@ class Solution:
     """
     # O(nlogn)
     def subarraySumClosest(self, nums):
-        sum_list = [[0, 0] for _ in xrange(len(nums) + 1)]
+        # sum_list[i]: [sum(nums[:i]), i-1]
+        sum_list = [[0, -1] for _ in xrange(len(nums) + 1)]
         for i in xrange(len(nums)):
-            sum_list[i + 1] = [sum_list[i][0] + nums[i], i + 1]
+            sum_list[i + 1] = [sum_list[i][0] + nums[i], i]
 
+        # Sort sum_list such that we can just compare adjacent elements in it.
         sum_list = sorted(sum_list, key=lambda x: x[0])
 
         min_diff = float('inf')
@@ -34,7 +36,7 @@ class Solution:
                 min_diff = diff
                 index_pair = [sum_list[i-1][1], sum_list[i][1]]
 
-        return [min(index_pair), max(index_pair)-1]
+        return [min(index_pair) + 1, max(index_pair)]
 
 
 if __name__ == '__main__':

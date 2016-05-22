@@ -66,6 +66,26 @@ class Solution(object):
         dfs([])
         return result
 
+    def permuteUnique4(self, nums):
+
+        def dfs(remaining, tmp):
+            if len(tmp) == len(nums):
+                results.append(tmp)
+                return
+
+            i = 0
+            while i < len(remaining):
+                rem = remaining[:i] + remaining[i+1:]
+                dfs(rem, tmp + [remaining[i]])
+                while i < len(remaining) - 1 and remaining[i] == remaining[i+1]:
+                    i += 1
+                i += 1
+
+        nums.sort()
+        results = []
+        dfs(nums, [])
+        return results
+
 
 if __name__ == '__main__':
     nums = [0, 1, 1, 0]
@@ -73,4 +93,5 @@ if __name__ == '__main__':
     print sol.permuteUnique(nums)
     print sol.permuteUnique2(nums)
     print sol.permuteUnique3(nums)
+    print sol.permuteUnique4(nums)
 

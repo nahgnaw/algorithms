@@ -16,8 +16,8 @@ Here are some examples. Inputs are in the left-hand column and its corresponding
 
 class Solution(object):
     """
-    1. Loop over the list from the right-hand side, if all the elements is ordered increasingly, just return the reversed list.
-    2. Starting from the right-hand side, find the first element (named A) that breaks the increasing order.
+    1. Loop over the list from the right-hand side, if all the elements is in ascending order, just return the reversed list.
+    2. Starting from the right-hand side, find the first element (named A) that breaks the ascending order.
     3. Starting from the right-hand side, find the first element (named B) that is larger than A. Swap A and B.
     4. Reverse all the elements on the right of the position of current A.
     """

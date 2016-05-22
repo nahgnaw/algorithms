@@ -55,7 +55,7 @@ class Solution(object):
     def permute4(self, nums):
         def dfs(tmp):
             if len(tmp) == len(nums):
-                result.append(tmp)
+                results.append(tmp)
                 return
             
             for i in xrange(len(nums)):
@@ -64,14 +64,29 @@ class Solution(object):
                     dfs(tmp + [nums[i]])
                     visited[i] = False
         
-        result = []
+        results = []
         visited = [False] * len(nums)
         dfs([])
-        return result
+        return results
         
+    # DFS w/o extra space for visit memory.
+    def permute5(self, nums):
+        def dfs(remaining, tmp):
+            if len(tmp) == len(nums):
+                results.append(tmp)
+                return
+
+            for i in xrange(len(remaining)):
+                rem = remaining[:i] + remaining[i+1:]
+                dfs(rem, tmp + [remaining[i]])
+
+
+        results = []
+        dfs(nums, [])
+        return results
 
 
 if __name__ == '__main__':
-    nums = [1, 2, 3]
+    nums = [1, 2, 3, 4]
     sol = Solution()
-    print sol.permute4(nums)
+    print sol.permute5(nums)

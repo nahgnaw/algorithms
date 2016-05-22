@@ -37,15 +37,15 @@ class Solution(object):
         while n > 0:
             # Select the number from the left most digit.
             index = k / factorial[n-1]
-            k = k % factorial[n-1]
+            k -= index * factorial[n-1]
             permutation += str(nums[index])
-            nums.remove(nums[index])
+            nums.pop(index)
             n -= 1
 
         return permutation
 
 
 if __name__ == '__main__':
-    n, k = 3, 5
+    n, k = 4, 14
     sol = Solution()
     print sol.getPermutation(n, k)

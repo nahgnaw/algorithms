@@ -46,11 +46,11 @@ class Person(object):
 # Then the survivor in the second round is in position: f(n-1, k)
 # Position in first round --------- Position in second round
 # k%n ----------------------------- 0
-# k%n+1 --------------------------- 1
-# k%n+2 --------------------------- 2
+# (k+1)%n ------------------------- 1
+# (k+2)%n ------------------------- 2
 # ...
-# k%n+f(n-1,k) -------------------- f(n-1,k)
-# f(n, k) = k % n + f(n-1, k) = (k + f(n-1, k)) % n
+# (k+f(n-1,k))%n ------------------ f(n-1,k)
+# f(n, k) = (k+f(n-1,k)) % n
 def josephus_dp(n, k):
     result = 0 # In the last round (1 person left), the survivor's position is 0.
     # Loop starting from the second last round (2 people left) to the first round (n people left)

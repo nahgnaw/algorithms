@@ -59,8 +59,8 @@ class Solution(object):
             return helper(x, 1.0)
 
     # Float version. Newton's method.
-    # Update rule: x_new = x_old - f(x_old) / f'(x_old)
-    # Here, f(x_old) = x_old^2 - x, f'(x_old) = 2 * x_old
+    # Update rule: t = t - f(t) / f'(t)
+    # Here, f(t) = t^2 - x, f'(t) = 2 * t
     def myFloatSqrt2(self, x, precision):
         x = float(x)
         sqrt = 1.0

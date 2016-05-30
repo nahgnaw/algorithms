@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 """
 Given a string, find the length of the longest substring T that contains at most 2 distinct characters.
 
@@ -30,7 +29,6 @@ class Solution(object):
                 left = leftmost + 1
             max_len = max(max_len, right - left)
         return max_len
-
 
 
 if __name__ == '__main__':

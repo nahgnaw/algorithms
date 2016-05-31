@@ -24,19 +24,24 @@ class Solution(object):
                 s[left], s[right] = s[right], s[left]
                 left += 1
                 right -= 1
-
-        _reverse(0, len(s) - 1)
-
-        j = 0
+                
+        if not s:
+            return
+        
+        # Reverse each individual word.
+        word_len = 0
         for i in xrange(len(s)):
             if s[i] == ' ':
-                if i - j >= 0 and s[i-j:i]:
-                    _reverse(i - j, i - 1)
-                    j = 0
+                _reverse(i - word_len, i - 1)
+                word_len = 0
             elif i == len(s) - 1:
-                _reverse(i - j, i)
+                _reverse(i - word_len, i)
             else:
-                j += 1
+                word_len += 1
+        
+        # Reverse the entire string.   
+        _reverse(0, len(s) - 1)
+
 
 
 if __name__ == '__main__':

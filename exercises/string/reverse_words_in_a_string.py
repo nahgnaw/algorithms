@@ -38,7 +38,7 @@ class Solution(object):
                 i += 1
                 continue
             if i >= len(s):
-                return ''
+                break
             j = i + 1
             while j < len(s) and not s[j] == ' ':
                 j += 1

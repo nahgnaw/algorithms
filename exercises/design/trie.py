@@ -101,5 +101,5 @@ if __name__ == '__main__':
     trie.insert('treemap')
     trie.insert('tap')
     print trie.search('treemap')
-    # print trie.startsWith("tree")
-    print trie.autocomplete('t')
+    print trie.startsWith("tree")
+    # print trie.autocomplete('t')

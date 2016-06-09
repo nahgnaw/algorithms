@@ -17,7 +17,7 @@ You may assume that you have an infinite number of each kind of coin.
 
 
 class Solution(object):
-    # DP.
+    # DP
     def coinChange(self, coins, amount):
         """
         :type coins: List[int]
@@ -37,4 +37,40 @@ class Solution(object):
             dp[i] = min([dp[i - coin] if i >= coin else float('inf') for coin in coins]) + 1
         
         return dp[-1] if not dp[-1] == float('inf') else -1
+
+    # BFS
+    def coinChange2(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+        if not coins:
+            return -1
+        if not amount:
+            return 0
+            
+        from collections import deque
+        
+        depth = 0
+        visited = set()
+        root = amount
+        q = deque([[amount]])
+        while q:
+            nodes = q.popleft()
+            level = []
+            for node in nodes:
+                if node == 0:
+                    return depth
+                for c in coins:
+                    if c <= node:
+                        diff = node - c
+                        if diff not in visited:
+                            level.append(diff)
+                            visited.add(diff)
+            if level:
+                depth += 1
+                q.append(level)
+        return -1
+        
         

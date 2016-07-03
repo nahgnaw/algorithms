@@ -29,8 +29,7 @@ class Solution(object):
         for i in xrange(1, len(nums)):
             for j in xrange(i):
                 if nums[j] < nums[i]:
-                    if dp[j] + 1 > dp[i]:
-                        dp[i] = dp[j] + 1
+                    dp[i] = max(dp[i], dp[j] + 1)
             max_len = max(max_len, dp[i])
         return max_len
 
@@ -57,6 +56,7 @@ class Solution(object):
 
 
 if __name__ == '__main__':
-    nums = [10,9,2,5,3,4]
+    nums = [10,9,2,5,1,2,5]
     sol = Solution()
     print sol.lengthOfLIS(nums)
+    print sol.lengthOfLIS2(nums)

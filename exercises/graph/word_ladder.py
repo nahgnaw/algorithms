@@ -33,7 +33,6 @@ class Solution(object):
         length = 2
         chars = 'abcdefghijklmnopqrstuvwxyz'
         source, target = set([beginWord]), set([endWord])
-        wordList.add(endWord)
         while source:
             # Generate all the transformations.
             pool = set(word[:i] + c + word[i+1:] for word in source for i in xrange(len(beginWord)) for c in chars)

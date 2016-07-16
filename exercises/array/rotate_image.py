@@ -26,5 +26,8 @@ class Solution(object):
 
         # Reverse each row
         for i in xrange(len(matrix)):
-            for j in xrange(len(matrix[i]) / 2):
-                matrix[i][j], matrix[i][len(matrix[i]) - 1 - j] = matrix[i][len(matrix[i]) - 1 - j], matrix[i][j]
+            l, r = 0, len(matrix[0]) - 1
+            while l < r:
+                matrix[i][l], matrix[i][r] = matrix[i][r], matrix[i][l]
+                l += 1
+                r -= 1

@@ -14,23 +14,21 @@ class Solution(object):
         :rtype: bool
         """
         if not s:
-            return False
-
-        parentheses = {
+            return True
+            
+        parenthesis_map = {
             ')': '(',
             ']': '[',
             '}': '{'
         }
+            
         stack = []
-        walk = 0
-        while walk < len(s):
-            if s[walk] in parentheses.values():
-                stack.append(s[walk])
+        for c in s:
+            if c in parenthesis_map.values():
+                stack.append(c)
             else:
-                if not stack or not parentheses[s[walk]] == stack.pop():
-                   return False
-            walk += 1
-
+                if not stack or not parenthesis_map[c] == stack.pop():
+                    return False
         return len(stack) == 0
         
 

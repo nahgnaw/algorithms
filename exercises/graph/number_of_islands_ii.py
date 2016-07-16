@@ -49,14 +49,14 @@ class Solution(object):
         :rtype: List[int]
         """
         # Find root of p with path compression.
-        def root(p):
+        def find(p):
             if not p == parent[p]:
-                parent[p] = root(parent[p])
+                parent[p] = find(parent[p])
             return parent[p]
         
         # Return the number of islands decreased by this union operation.
         def union(p, q):
-            p, q = root(p), root(q)
+            p, q = find(p), find(q)
             if p == q:
                 # If p and q are already connected, don't decrease the number of islands.
                 return 0

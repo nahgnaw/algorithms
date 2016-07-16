@@ -49,7 +49,9 @@ class Solution(object):
         start, end = 0, len(matrix) - 1
         while start <= end:
             mid = (start + end) / 2
-            if matrix[mid][-1] < target:
+            if matrix[mid][-1] == target:
+                return True
+            elif matrix[mid][-1] < target:
                 start = mid + 1
             else:
                 end = mid - 1

@@ -27,14 +27,24 @@ class Solution(object):
         :type grid: List[List[str]]
         :rtype: int
         """
-        def sink(i, j):
-            if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] == '1':
-                grid[i][j] = '0'
-                map(sink, (i+1, i-1, i, i), (j, j , j+1, j-1))
-                return 1
+        from collections import deque
+        
+        def dfs(x, y):
+            for i, j in [(x - 1, y), (x + 1, y), (x, y - 1), (x, y + 1)]:
+                if 0 <= i < len(grid) and 0 <= j < len(grid[0]) and grid[i][j] == '1':
+                    grid[i][j] = '0'
+                    dfs(i, j)
+                        
+        if not len(grid) or not len(grid[0]):
             return 0
-
-        return sum(sink(i, j) for i in xrange(len(grid)) for j in xrange(len(grid[0])))
+        
+        island_count = 0    
+        for i in xrange(len(grid)):
+            for j in xrange(len(grid[0])):
+                if grid[i][j] == '1':
+                    island_count += 1
+                    dfs(i, j)
+        return island_count
 
 
     # BFS
